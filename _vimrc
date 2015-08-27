@@ -15,6 +15,8 @@ endif
 
 NeoBundle 'a.vim'
 NeoBundle 'bling/vim-airline'
+NeoBundle 'xolox/vim-easytags'
+NeoBundle 'xolox/vim-misc'
 NeoBundle 'vimscript/bash-support'
 NeoBundle 'vimscript/c-support'
 NeoBundle 'vimscript/vim-support'
@@ -41,6 +43,7 @@ NeoBundle 'raimondi/delimitMate'
 NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'scrooloose/syntastic'
+" NeoBundle 'Valloric/YouCompleteMe'
 NeoBundle 'shougo/context_filetype.vim', {'depends': 'shougo/neocomplete.vim'}
 NeoBundle 'shougo/neco-syntax', {'depends': ['shougo/neco-vim'. 'shougo/neocomplete.vim']}
 NeoBundle 'shougo/neco-vim', {'depends': 'shougo/neocomplete.vim'}
