@@ -17,6 +17,10 @@ NeoBundle 'a.vim'
 NeoBundle 'bling/vim-airline'
 NeoBundle 'vimscript/bash-support'
 NeoBundle 'vimscript/c-support'
+NeoBundle 'vimscript/vim-support'
+NeoBundle 'vim-scripts/Cpp11-Syntax-Support'
+NeoBundle 'vim-scripts/latex-support.vim'
+NeoBundle 'vim-scripts/Git-Support'
 NeoBundle 'chrisbra/colorizer'
 NeoBundle 'ctrlpvim/ctrlp.vim'
 NeoBundle 'davidhalter/jedi-vim'
@@ -49,6 +53,27 @@ NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'tpope/vim-speeddating'
 NeoBundle 'vimtaku/hl_matchit.vim', {'depends': 'matchit.zip'}
 NeoBundle 'yggdroot/indentLine'
+
+" Unite. The interface to rule almost everything
+NeoBundle 'Shougo/unite.vim'
+"
+" Unite sources
+NeoBundleLazy 'Shougo/unite-outline', {'autoload':{'unite_sources':'outline'}}
+NeoBundleLazy 'tsukkee/unite-help', {'autoload':{'unite_sources':'help'}}
+NeoBundleLazy 'ujihisa/unite-colorscheme', {'autoload':{'unite_sources':
+      \ 'colorscheme'}}
+NeoBundleLazy 'ujihisa/unite-locate', {'autoload':{'unite_sources':'locate'}}
+NeoBundleLazy 'thinca/vim-unite-history', { 'autoload' : { 'unite_sources' :
+      \ ['history/command', 'history/search']}}
+NeoBundleLazy 'osyo-manga/unite-filetype', { 'autoload' : {'unite_sources' :
+      \ 'filetype', }}
+NeoBundleLazy 'osyo-manga/unite-quickfix', {'autoload':{'unite_sources':
+      \ ['quickfix', 'location_list']}}
+NeoBundleLazy 'osyo-manga/unite-fold', {'autoload':{'unite_sources':'fold'}}
+NeoBundleLazy 'tacroe/unite-mark', {'autoload':{'unite_sources':'mark'}}
+NeoBundleLazy 'tsukkee/unite-tag', {'autoload':{'unite_sources':'tag'}}
+NeoBundleLazy 'Shougo/neomru.vim', {'autoload':{'unite_sources': 
+      \['file_mru', 'directory_mru']}}
 
 if has('mac')
   NeoBundle 'rizzatti/dash.vim'
@@ -445,3 +470,10 @@ endif
 if neobundle#is_sourced('hl_matchit.vim')
   let g:hl_matchit_enable_on_vim_startup = 1
 endif
+
+"Unite
+nnoremap <C-p> :Unite file_rec/async<cr>
+
+"NeoComplete
+nnoremap <C-T> :NeoCompleteToggle<cr>
+
