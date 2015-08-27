@@ -54,6 +54,16 @@ NeoBundle 'tpope/vim-speeddating'
 NeoBundle 'vimtaku/hl_matchit.vim', {'depends': 'matchit.zip'}
 NeoBundle 'yggdroot/indentLine'
 
+" Show git repository changes in the current file
+NeoBundle 'airblade/vim-gitgutter'
+" Git viewer
+NeoBundleLazy 'gregsexton/gitv', {'depends':['tpope/vim-fugitive'],
+            \ 'autoload':{'commands':'Gitv'}}
+" Browse GitHub events in Vim
+NeoBundle 'joedicastro/vim-github-dashboard'
+
+
+
 " Unite. The interface to rule almost everything
 NeoBundle 'Shougo/unite.vim'
 "
@@ -86,6 +96,11 @@ NeoBundleCheck
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Basic configuration
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" <Leader> & <LocalLeader> mapping {{{
+
+let mapleader=','
+let maplocalleader= '/'
 
 "Get out of VI's compatible mode..
 set nocompatible
@@ -449,7 +464,7 @@ endif
 
 "Nerdtree
 if neobundle#is_sourced('nerdtree')
-  nmap <leader>nt :NERDTreeToggle<CR>
+  nmap <F2> :NERDTreeToggle<CR>
 endif
 
 "tern
@@ -471,9 +486,16 @@ if neobundle#is_sourced('hl_matchit.vim')
   let g:hl_matchit_enable_on_vim_startup = 1
 endif
 
-"Unite
-nnoremap <C-p> :Unite file_rec/async<cr>
-
 "NeoComplete
 nnoremap <C-T> :NeoCompleteToggle<cr>
 
+"folding setting
+set foldmethod=syntax
+set foldlevel=99
+nnoremap <space> za
+
+"make-related
+nnoremap <F5> :!make<cr>
+
+"Gitv
+nnoremap <F3> :Gitv<cr>
