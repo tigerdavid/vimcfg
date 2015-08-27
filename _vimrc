@@ -15,6 +15,8 @@ endif
 
 NeoBundle 'a.vim'
 NeoBundle 'bling/vim-airline'
+NeoBundle 'vimscript/bash-support'
+NeoBundle 'vimscript/c-support'
 NeoBundle 'chrisbra/colorizer'
 NeoBundle 'ctrlpvim/ctrlp.vim'
 NeoBundle 'davidhalter/jedi-vim'

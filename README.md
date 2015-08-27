@@ -14,7 +14,7 @@ Usage
 2. Clone vimcfg repos
 
   ```
-  git clone https://github.com/jsfaint/vimcfg.git
+  git clone https://github.com/tigerdavid/vimcfg.git
   ```
 
 2. Init submodules (NeoBundle)
