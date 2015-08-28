@@ -17,8 +17,8 @@ NeoBundle 'a.vim'
 NeoBundle 'bling/vim-airline'
 NeoBundle 'xolox/vim-easytags'
 NeoBundle 'xolox/vim-misc'
-NeoBundle 'vimscript/bash-support'
-NeoBundle 'vimscript/c-support'
+NeoBundle 'tigerdavid/bash-support.vim'
+NeoBundle 'tigerdavid/c-support'
 NeoBundle 'vimscript/vim-support'
 NeoBundle 'vim-scripts/Cpp11-Syntax-Support'
 NeoBundle 'vim-scripts/latex-support.vim'
@@ -31,6 +31,8 @@ NeoBundle 'dkprice/vim-easygrep'
 NeoBundle 'honza/vim-snippets', {'depends': 'shougo/neosnippet.vim'}
 NeoBundle 'jsfaint/gen_tags.vim'
 NeoBundle 'lendyzhang/vim-emax'
+NeoBundle 'altercation/vim-colors-solarized'
+NeoBundle 'vim-scripts/molokai'
 NeoBundle 'majutsushi/tagbar'
 NeoBundle 'marijnh/tern_for_vim'
 NeoBundle 'mattn/emmet-vim'
@@ -73,8 +75,8 @@ NeoBundle 'Shougo/unite.vim'
 " Unite sources
 NeoBundleLazy 'Shougo/unite-outline', {'autoload':{'unite_sources':'outline'}}
 NeoBundleLazy 'tsukkee/unite-help', {'autoload':{'unite_sources':'help'}}
-NeoBundleLazy 'ujihisa/unite-colorscheme', {'autoload':{'unite_sources':
-      \ 'colorscheme'}}
+" NeoBundleLazy 'ujihisa/unite-colorscheme', {'autoload':{'unite_sources':
+"       \ 'colorscheme'}}
 NeoBundleLazy 'ujihisa/unite-locate', {'autoload':{'unite_sources':'locate'}}
 NeoBundleLazy 'thinca/vim-unite-history', { 'autoload' : { 'unite_sources' :
       \ ['history/command', 'history/search']}}
@@ -159,13 +161,11 @@ elseif has("macunix")
 elseif has("unix")
   set guifont=Sauce\ Code\ Powerline\ 11
 endif
-
 if has("gui_running")
   if has("win32")
     au GUIEnter * simalt ~x
   endif
 
-  colorscheme desert
 
   set guioptions-=b "Bottom scrollbar
   set guioptions-=r "Right-hand scrollbar
@@ -174,7 +174,8 @@ if has("gui_running")
   set guioptions-=m "Menu bar
   set guioptions+=c "console dialogs
 else
-  colorscheme desert
+  colorscheme molokai
+"  colorscheme solarized
 endif
 
 autocmd BufEnter * :syntax sync fromstart
@@ -502,3 +503,8 @@ nnoremap <F5> :!make<cr>
 
 "Gitv
 nnoremap <F3> :Gitv<cr>
+
+set t_Co=256
+" set background=dark
+" highlight Normal ctermbg=NONE
+" highlight nonText ctermbg=NONE
