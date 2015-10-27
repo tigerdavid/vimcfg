@@ -2,9 +2,6 @@
 " Note: Skip initialization for vim-tiny or vim-small.
 if !1 | finish | endif
 
-"neobundle, it should be in the front of vimrc to avoid some weird errors.
-filetype off
-
 if has("win32")
   set rtp+=$VIM/vimfiles/bundle/neobundle.vim/
   call neobundle#begin('$VIM/vimfiles/bundle')
@@ -13,7 +10,7 @@ elseif has("unix")
   call neobundle#begin('$HOME/.vim/bundle')
 endif
 
-NeoBundle 'a.vim'
+"Enhanced
 NeoBundle 'bling/vim-airline'
 NeoBundle 'xolox/vim-easytags'
 NeoBundle 'xolox/vim-misc'
@@ -26,24 +23,49 @@ NeoBundle 'vim-scripts/Git-Support'
 NeoBundle 'chrisbra/colorizer'
 NeoBundle 'ctrlpvim/ctrlp.vim'
 NeoBundle 'davidhalter/jedi-vim'
+NeoBundle 'derekmcloughlin/gvimfullscreen_win32', {'disabled': !has('win32')}
 NeoBundle 'dimasg/vim-mark'
+NeoBundle 'mbbill/fencview', {'disabled': !has('iconv')}
+NeoBundle 'mbbill/undotree'
+NeoBundle 'osyo-manga/vim-over'
+NeoBundle 'shougo/vimproc.vim', {'build': {'unix': 'make'}}
+NeoBundle 'tpope/vim-speeddating'
+
+"Search, Explore
+NeoBundle 'ctrlpvim/ctrlp.vim'
 NeoBundle 'dkprice/vim-easygrep'
-NeoBundle 'honza/vim-snippets', {'depends': 'shougo/neosnippet.vim'}
-NeoBundle 'jsfaint/gen_tags.vim'
+NeoBundle 'scrooloose/nerdtree'
+
+"C Family
+NeoBundle 'a.vim'
 NeoBundle 'lendyzhang/vim-emax'
 NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'vim-scripts/molokai'
 NeoBundle 'majutsushi/tagbar'
-NeoBundle 'marijnh/tern_for_vim'
+NeoBundle 'osyo-manga/vim-marching', {'disabled': !executable('clang')}
+NeoBundle 'osyo-manga/vim-reunions', {'disabled': !executable('clang')}
+
+"Python
+NeoBundle 'davidhalter/jedi-vim', {'disabled': !executable('python')}
+
+"Go
+NeoBundle 'fatih/vim-go', {'disabled': !executable('go')}
+
+"Web development
+"NeoBundle 'chrisbra/colorizer'
+NeoBundle 'marijnh/tern_for_vim', {'disabled': !executable('python')}
 NeoBundle 'mattn/emmet-vim'
-NeoBundle 'mbbill/fencview'
-NeoBundle 'mbbill/undotree'
-NeoBundle 'mhinz/vim-signify'
-NeoBundle 'osyo-manga/vim-marching', {'depends': ['shougo/vimproc.vim', 'osyo-manga/vim-reunions'], 'disabled': !executable('clang')}
-NeoBundle 'osyo-manga/vim-over'
-NeoBundle 'raimondi/delimitMate'
+
+"Git related
+NeoBundle 'mhinz/vim-signify', {'disabld': !executable('git')}
+NeoBundle 'tpope/vim-fugitive', {'disabled': !executable('git')}
+
+"Coding
+NeoBundle 'jsfaint/gen_tags.vim'
+NeoBundle 'majutsushi/tagbar'
+NeoBundle 'matchit.zip'
+NeoBundle 'raimondi/delimitmate'
 NeoBundle 'scrooloose/nerdcommenter'
-NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'scrooloose/syntastic'
 " NeoBundle 'Valloric/YouCompleteMe'
 NeoBundle 'shougo/context_filetype.vim', {'depends': 'shougo/neocomplete.vim'}
@@ -54,10 +76,20 @@ NeoBundle 'shougo/neoinclude.vim', {'depends': 'shougo/neocomplete.vim'}
 NeoBundle 'shougo/neosnippet-snippets', {'depends': 'shougo/neosnippet.vim'}
 NeoBundle 'shougo/vimproc.vim', {'build': {'unix': 'make -f make_unix.mak', 'mac': 'make -f make_mac.mak'}}
 NeoBundle 'shougo/vinarise.vim', {'vim_version': '7.3'}
-NeoBundle 'tpope/vim-fugitive'
-NeoBundle 'tpope/vim-speeddating'
-NeoBundle 'vimtaku/hl_matchit.vim', {'depends': 'matchit.zip'}
-NeoBundle 'yggdroot/indentLine'
+NeoBundle 'yggdroot/indentline'
+if has('lua')
+  NeoBundle 'honza/vim-snippets'
+  NeoBundle 'shougo/context_filetype.vim'
+  NeoBundle 'shougo/echodoc.vim'
+  NeoBundle 'shougo/neco-syntax'
+  NeoBundle 'shougo/neco-vim'
+  NeoBundle 'shougo/neocomplete.vim'
+  NeoBundle 'shougo/neoinclude.vim'
+  NeoBundle 'shougo/neosnippet-snippets'
+  NeoBundle 'shougo/neosnippet.vim'
+else
+  NeoBundle 'ajh17/VimCompletesMe'
+endif
 
 " Show git repository changes in the current file
 NeoBundle 'airblade/vim-gitgutter'
@@ -110,23 +142,20 @@ let maplocalleader= '/'
 "Get out of VI's compatible mode..
 set nocompatible
 
-"Sets how many lines of history VIM have to remember
-set history=50
-
 "Enable filetype plugin
 filetype plugin indent on
 
 "Set to auto read when a file is changed from the outside
 set autoread
 
-"Have the mouse enabled all the time:
+"Enable use of the mouse
 set mouse=a
 
 " Hide the mouse when typing text
 set mousehide
 
 "Set mapleader
-let g:mapleader=","
+let g:mapleader = ","
 
 "Fast saving
 nmap \w :update<CR>
@@ -143,9 +172,9 @@ set encoding=utf-8
 set fileencoding=utf-8
 set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
 
-let $LANG='en_US.UTF-8'
+let $LANG = 'en_US.UTF-8'
 set langmenu=en_US
-if has('win32')
+if has('win32') || has('win64')
   source $VIMRUNTIME/delmenu.vim
   source $VIMRUNTIME/menu.vim
 endif
@@ -190,10 +219,13 @@ set so=7
 
 "Turn on WiLd menu
 set wildmenu
+
+"Ignore these patterns
 set wildignore=*.bak,*.o,*.e,*~
 
 "Number of screen lines to use for the command-line
 set cmdheight=2
+
 set showcmd
 
 "Show line number
@@ -236,14 +268,6 @@ set magic
 set noerrorbells
 set visualbell
 
-"show matching brackets
-set showmatch
-"Tenths of a second to show the matching pattern.
-set matchtime=10
-
-"Show mode, insert/replaced/visual/etc
-set showmode
-
 "Filetypes
 set ffs=unix,dos
 
@@ -256,7 +280,7 @@ set laststatus=2
 "Switch to current dir
 nmap <Leader>cd :cd %:p:h<CR>
 
-set completeopt=longest,menuone
+set completeopt+=menuone
 
 "Turn backup off
 set nobackup
@@ -272,7 +296,6 @@ set expandtab
 set shiftwidth=4
 set softtabstop=4
 set tabstop=4
-autocmd FileType make setlocal noexpandtab
 
 set ambiwidth=double
 
@@ -281,10 +304,6 @@ set autoindent
 
 "Smart indent
 set smartindent
-
-"Quick source for VimL
-autocmd FileType vim map <buffer> <Leader><space> :w!<CR>:source %<CR>
-autocmd FileType vim setlocal expandtab shiftwidth=2 softtabstop=2
 
 "No Highlight
 map <silent> <Leader><CR> :noh<CR>
@@ -298,7 +317,7 @@ nmap <leader>l :%s/\s*$//g<CR>:noh<CR>
 "persistent undo
 function! Make_undodir()
   if version >= 703 && has('persistent_undo')
-    let l:dir=expand("$HOME/.cache/undodir")
+    let l:dir = expand("$HOME/.cache/undodir")
     set undofile
     exec 'set undodir=' . l:dir
 
@@ -316,6 +335,14 @@ if has('gui_running') && (has("win32"))
   noremap / :set noimdisable<CR>/
 endif
 
+"Disable expandtab for makefile
+autocmd FileType make setlocal noexpandtab
+
+"Setting for VimL
+autocmd FileType vim map <buffer> <Leader><space> :w!<CR>:source %<CR>
+autocmd FileType vim setlocal expandtab shiftwidth=2 softtabstop=2
+autocmd FileType vim nnoremap <buffer> <silent> K :execute("help " . expand("<cword>"))<CR>
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin configuration
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -327,18 +354,18 @@ endif
 "tagbar
 if neobundle#is_sourced('tagbar')
   map <silent> <Leader>t <esc>:TagbarToggle<CR>
-  let g:tagbar_sort=0
-  let g:tagbar_left=1
-  let g:tagbar_compact=1
+  let g:tagbar_sort = 0
+  let g:tagbar_left = 1
+  let g:tagbar_compact = 1
 endif
 
 "EasyGrep
-let EasyGrepMode=0
-let EasyGrepRecursive=1
-let EasyGrepIgnoreCase=1
-let EasyGrepReplaceWindowMode=2
-let EasyGrepJumpToMatch=0
-let g:EasyGrepFilesToExclude="GPATH,GRTAGS,GTAGS"
+let EasyGrepMode = 0
+let EasyGrepRecursive = 1
+let EasyGrepIgnoreCase = 1
+let EasyGrepReplaceWindowMode = 2
+let EasyGrepJumpToMatch = 0
+let g:EasyGrepFilesToExclude = "GPATH,GRTAGS,GTAGS"
 
 if executable('pt')
   set grepprg=pt
@@ -357,57 +384,13 @@ else
   let EasyGrepCommand = 0
 endif
 
-"neocomplete.vim
-if neobundle#is_sourced('neocomplete.vim')
-  let g:neocomplete#enable_at_startup=1
-  let g:neocomplete#enable_smart_case=1
-  let g:neocomplete#enable_auto_select=1
-  let g:neocomplete#enable_insert_char_pre = 1
-  let g:neocomplete#fallback_mappings = ["\<C-x>\<C-o>", "\<C-x>\<C-n>"]
-
-  "Plugin key-mappings.
-  inoremap <expr><C-g> neocomplete#undo_completion()
-  inoremap <expr><C-l> neocomplete#complete_common_string()
-
-  inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-  inoremap <expr><C-y> neocomplete#close_popup()
-  inoremap <expr><C-e> neocomplete#cancel_popup()
-
-  imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-        \ "\<Plug>(neosnippet_expand_or_jump)"
-        \: "\<TAB>"
-  smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-        \ "\<Plug>(neosnippet_expand_or_jump)"
-        \: "\<TAB>"
-
-  if !exists('g:neocomplete#force_omni_input_patterns')
-    let g:neocomplete#force_omni_input_patterns = {}
-  endif
-  let g:neocomplete#force_omni_input_patterns.c =
-        \ '[^.[:digit:] *\t]\%(\.\|->\)\w*'
-  let g:neocomplete#force_omni_input_patterns.cpp =
-        \ '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
-  let g:neocomplete#force_omni_input_patterns.objc =
-        \ '\[\h\w*\s\h\?\|\h\w*\%(\.\|->\)'
-  let g:neocomplete#force_omni_input_patterns.objcpp =
-        \ '\[\h\w*\s\h\?\|\h\w*\%(\.\|->\)\|\h\w*::\w*'
-endif
-
 "vim-marching
 if neobundle#is_sourced('vim-marching')
-  let g:marching_enable_neocomplete = 1
+  if neobundle#is_sourced('neocomplete.vim')
+    let g:marching_enable_neocomplete = 1
+  endif
   let g:marching_enable_auto_select = 1
-  if has('win32')
-    let g:marching_include_paths = [
-          \ "C:/Program Files (x86)/LLVM/include"
-          \]
-  elseif has('mac')
-    let g:marching_include_paths = [
-          \ "/usr/include",
-          \ "/usr/local/include",
-          \ "/Library/Developer/CommandLineTools/usr/include"
-          \]
-  elseif has('unix')
+  if has('unix')
     let g:marching_include_paths = [
           \ "/usr/include",
           \ "/usr/local/include"
@@ -420,27 +403,46 @@ if neobundle#is_sourced('neosnippet.vim')
   let g:neosnippet#enable_snipmate_compatibility = 1
 endif
 
+"echodoc.vim
+if neobundle#is_sourced('echodoc.vim')
+  let g:echodoc_enable_at_startup = 1
+endif
+
+"neocomplete.vim
+if neobundle#is_sourced('neocomplete.vim')
+  inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+  inoremap <expr><CR> pumvisible() ? "\<C-y>" : "\<CR>"
+  imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+        \ "\<Plug>(neosnippet_expand_or_jump)"
+        \: "\<TAB>"
+  smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+        \ "\<Plug>(neosnippet_expand_or_jump)"
+        \: "\<TAB>"
+
+  if !exists('g:neocomplete#sources#omni#input_patterns')
+    let g:neocomplete#sources#omni#input_patterns = {}
+    let g:neocomplete#sources#omni#input_patterns.c =
+          \ '[^.[:digit:] *\t]\%(\.\|->\)'
+    let g:neocomplete#sources#omni#input_patterns.cpp =
+          \'[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+  endif
+
+  let g:neocomplete#fallback_mappings = ["\<C-x>\<C-o>", "\<C-x>\<C-n>"]
+  let g:neocomplete#enable_auto_select = 1
+  let g:neocomplete#enable_at_startup = 1
+endif
+
 "CtrlP
 if neobundle#is_sourced('ctrlp.vim')
   let g:ctrlp_mruf_relative = 1
   let g:ctrlp_regexp = 1
   let g:ctrlp_max_files = 0
-  if has('unix')
-    let g:ctrlp_user_command = {
-          \ 'types': {
-          \ 1: ['.git', 'cd %s && git ls-files'],
-          \ 2: ['.hg', 'hg --cwd %s locate -I .'],
-          \ },
-          \ 'fallback': 'find %s -type f'
-          \ }
+
+  if executable('pt')
+    let g:ctrlp_user_command = 'pt -g . %s'
+    let g:ctrlp_clear_cache_on_exit = 1
   else
-    let g:ctrlp_user_command = {
-          \ 'types': {
-          \ 1: ['.git', 'cd %s && git ls-files'],
-          \ 2: ['.hg', 'hg --cwd %s locate -I .'],
-          \ },
-          \ 'fallback': 'dir %s /-n /b /s /a-d'
-          \ }
+    let g:ctrlp_clear_cache_on_exit = 0
   endif
 endif
 
@@ -456,8 +458,10 @@ endif
 if neobundle#is_sourced('vim-airline')
   let g:airline#extensions#tabline#enabled = 1
   let g:airline_powerline_fonts = 1
+  set noshowmode
 else
   set statusline=%m\%F%r\ %w%=%y\ L:%l/%L\ C:%c\ (%p%%)
+  set showmode
 endif
 
 "undotree
@@ -471,11 +475,6 @@ if neobundle#is_sourced('nerdtree')
   nmap <F2> :NERDTreeToggle<CR>
 endif
 
-"tern
-if neobundle#is_sourced('tern_for_vim')
-  autocmd FileType javascript nnoremap <leader>j :TernDef<CR>
-endif
-
 "syntastic
 if neobundle#is_sourced('syntastic')
   let g:syntastic_aggregate_errors = 1
@@ -483,11 +482,27 @@ if neobundle#is_sourced('syntastic')
   let g:syntastic_auto_loc_list = 2
   let g:syntastic_check_on_open = 1
   let g:syntastic_check_on_wq = 0
+
+  if has('gui_running')
+    let g:syntastic_error_symbol = '✗'
+    let g:syntastic_warning_symbol = '⚠'
+    let g:syntastic_style_error_symbol = '✠'
+    let g:syntastic_style_warning_symbol = '≈'
+  endif
 endif
 
-"hl_matchit
-if neobundle#is_sourced('hl_matchit.vim')
-  let g:hl_matchit_enable_on_vim_startup = 1
+"tern.js
+if neobundle#is_sourced('tern_for_vim')
+    autocmd FileType javascript nnoremap <buffer> <silent> gd :TernDef<CR>
+    autocmd FileType javascript nnoremap <buffer> <silent> K :TernDoc<CR>
+    let g:tern_show_argument_hints = 'on_move'
+    let g:tern_show_signature_in_pum = 1
+endif
+
+"gvimfullscreen_win32
+if neobundle#is_sourced('gvimfullscreen_win32')
+  let $GVIMFS=substitute(expand("$VIM/vimfiles/bundle/gvimfullscreen_win32/gvimfullscreen.dll"), '\\', '\\\\', 'g')
+  map <F11> <Esc>:call libcallnr($GVIMFS, "ToggleFullScreen", 0)<CR>
 endif
 
 "NeoComplete
@@ -508,3 +523,21 @@ set t_Co=256
 " set background=dark
 " highlight Normal ctermbg=NONE
 " highlight nonText ctermbg=NONE
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Extra Setting
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"NOTE: extra.vim is for some special setting
+"  which is volatile, platform related, but non-standard setting
+function! Load_extra()
+  "Extra setting out of vimrc
+  if has("win32")
+    let l:extra_conf = expand("$VIM/extra.vim")
+  elseif has("unix")
+    let l:extra_conf = expand("$HOME/.vim/extra.vim")
+  endif
+
+  if filereadable(l:extra_conf)
+    execute 'source ' . fnameescape(l:extra_conf)
+  endif
+endfunction
+call Load_extra()
