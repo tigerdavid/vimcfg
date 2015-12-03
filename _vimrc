@@ -25,6 +25,7 @@ NeoBundle 'ctrlpvim/ctrlp.vim'
 NeoBundle 'davidhalter/jedi-vim'
 NeoBundle 'derekmcloughlin/gvimfullscreen_win32', {'disabled': !has('win32')}
 NeoBundle 'dimasg/vim-mark'
+NeoBundle 'kkoenig/wimproved.vim', {'disabled': !has('win32')}
 NeoBundle 'mbbill/fencview', {'disabled': !has('iconv')}
 NeoBundle 'mbbill/undotree'
 NeoBundle 'osyo-manga/vim-over'
@@ -57,7 +58,7 @@ NeoBundle 'marijnh/tern_for_vim', {'disabled': !executable('python')}
 NeoBundle 'mattn/emmet-vim'
 
 "Git related
-NeoBundle 'mhinz/vim-signify', {'disabld': !executable('git')}
+NeoBundle 'mhinz/vim-signify', {'disabled': !executable('git')}
 NeoBundle 'tpope/vim-fugitive', {'disabled': !executable('git')}
 
 "Coding
@@ -214,10 +215,10 @@ set nocursorline
 "Set numbers of terminal colors
 set t_Co=256
 
-"Set 7 lines to the curors - when moving vertical..
+"Set 7 lines to the cursor - when moving vertical..
 set so=7
 
-"Turn on WiLd menu
+"Turn on wild menu
 set wildmenu
 
 "Ignore these patterns
@@ -268,7 +269,6 @@ set magic
 set noerrorbells
 set visualbell
 
-"Filetypes
 set ffs=unix,dos
 
 nmap <Leader>fd :se ff=dos<CR>
@@ -277,7 +277,7 @@ nmap <Leader>fu :se ff=unix<CR>
 "Always show the statusline
 set laststatus=2
 
-"Switch to current dir
+"Switch to current directory
 nmap <Leader>cd :cd %:p:h<CR>
 
 set completeopt+=menuone
@@ -329,7 +329,7 @@ endfunction
 call Make_undodir()
 
 "Enable/Disable IME
-if has('gui_running') && (has("win32"))
+if has('gui_running') && has("win32")
   autocmd! InsertLeave * set imdisable
   autocmd! InsertEnter * set noimdisable
   noremap / :set noimdisable<CR>/
@@ -351,7 +351,7 @@ if neobundle#is_sourced('a.vim')
   let g:alternateNoDefaultAlternate = 1
 endif
 
-"tagbar
+"Tagbar
 if neobundle#is_sourced('tagbar')
   map <silent> <Leader>t <esc>:TagbarToggle<CR>
   let g:tagbar_sort = 0
@@ -360,28 +360,30 @@ if neobundle#is_sourced('tagbar')
 endif
 
 "EasyGrep
-let EasyGrepMode = 0
-let EasyGrepRecursive = 1
-let EasyGrepIgnoreCase = 1
-let EasyGrepReplaceWindowMode = 2
-let EasyGrepJumpToMatch = 0
-let g:EasyGrepFilesToExclude = "GPATH,GRTAGS,GTAGS"
+if neobundle#is_sourced('vim-easygrep')
+  let EasyGrepMode = 0
+  let EasyGrepRecursive = 1
+  let EasyGrepIgnoreCase = 1
+  let EasyGrepReplaceWindowMode = 2
+  let EasyGrepJumpToMatch = 0
+  let g:EasyGrepFilesToExclude = "GPATH,GRTAGS,GTAGS"
 
-if executable('pt')
-  set grepprg=pt
-  let EasyGrepCommand = 1
-elseif executable('ag')
-  set grepprg=ag
-  let EasyGrepCommand = 1
-elseif executable('ack')
-  set grepprg=ack
-  let EasyGrepCommand = 1
-elseif executable('grep')
-  set grepprg=grep
-  let EasyGrepCommand = 1
-else
-  set grepprg=''
-  let EasyGrepCommand = 0
+  if executable('pt')
+    set grepprg=pt
+    let EasyGrepCommand = 1
+  elseif executable('ag')
+    set grepprg=ag
+    let EasyGrepCommand = 1
+  elseif executable('ack')
+    set grepprg=ack
+    let EasyGrepCommand = 1
+  elseif executable('grep')
+    set grepprg=grep
+    let EasyGrepCommand = 1
+  else
+    set grepprg=''
+    let EasyGrepCommand = 0
+  endif
 endif
 
 "vim-marching
@@ -451,7 +453,7 @@ if neobundle#is_sourced('vim-mark')
   let g:mwDefaultHighlightingPalette = 'maximum'
   let g:mwAutoLoadMarks = 1
   let g:mwAutoSaveMarks = 1
-  set viminfo+=! "Save and restore global vriables
+  set viminfo+=! "Save and restore global variables
 endif
 
 "airline
@@ -499,10 +501,9 @@ if neobundle#is_sourced('tern_for_vim')
     let g:tern_show_signature_in_pum = 1
 endif
 
-"gvimfullscreen_win32
-if neobundle#is_sourced('gvimfullscreen_win32')
-  let $GVIMFS=substitute(expand("$VIM/vimfiles/bundle/gvimfullscreen_win32/gvimfullscreen.dll"), '\\', '\\\\', 'g')
-  map <F11> <Esc>:call libcallnr($GVIMFS, "ToggleFullScreen", 0)<CR>
+if neobundle#is_sourced('wimproved.vim')
+  autocmd GUIEnter * silent! WToggleClean
+  map <F11> :WToggleFullscreen<CR>
 endif
 
 "NeoComplete
