@@ -1,11 +1,10 @@
-vimcfg
-======
+# vimcfg
 
 This repository is my personal Vim configurations, include configuration and plugins.
 The plugins are managed by [neobundle](https://github.com/Shougo/neobundle.vim).
 
-Usage
------
+## Usage
+
 1. Install git on your OS
   * For Windows user: Install [windows for git](https://git-for-windows.github.io)
   * For Linux user: Install git via your [package manager](https://en.wikipedia.org/wiki/Package_manager)
@@ -17,13 +16,6 @@ Usage
   git clone https://github.com/tigerdavid/vimcfg.git
   ```
 
-2. Initial submodules (NeoBundle)
-
-  ```
-  cd vimcfg
-  git submodule update --init
-  ```
-
 3. Create symbolic links
   * Linux/OS X
 
@@ -33,15 +25,12 @@ Usage
     ```
 
   * Windows
-    You can create quick link to c:/Users/[uername]/.vim
-    But maybe it's easier to install vim into the vimcfg folder.
-
-    If you install vim into vimcfg folder the treeview will like below:
+    Install vim into the vimcfg diretory and the treeview should like below:
 
     ```
     vimcfg
     +-- .git
-    +-- vim74
+    +-- vim74 (vim install directory)
     +-- vimfiles
     +-- .gitignore
     +-- .gitmodules
@@ -62,16 +51,27 @@ Usage
   Some plugins require external command.
   * `fencview` require vim has `iconv` feature and an external lib `iconv.dll` for windows.
   * `neocomplete` require vim has `if_lua` feature.
-  * `vim-marching` require Clang for C-family completion.
-  * `syntastic` need to install external checker for different language.
+  * `vim-clang` require Clang for C-family completion.
+  * `syntastic` need to install external checker for different filetype.
   * `vimproc` need to build C code to dll on windows, which will auto build for Linux and OS X.
   * `vim-go` need to install binary tool via `:GoInstallBinaries`
   * `gen_tags.vim` require [ctags](http://ctags.sourceforge.net/) and [GNU global](http://www.gnu.org/software/global/)
-  * `tern_for_vim` require install tern (node.js base)
+  * `tern_for_vim` require install tern (node.js based)
 
-Other
------
-For more details about `neobundle`  
+## How to update neobundle.vim
+
+neobundle.vim is managed by git subtree.<br/>
+So if you need to update it. please use the following command.
+
+```
+git subtree pull --prefix vimfiles/bundle/neobundle.vim https://github.com/Shougo/neobundle.vim.git master --squash
+```
+
+Be sure don't forget the paramenter `--squash`, otherwise all the history of subtree will be add to your history.
+
+## Other
+
+For more details about `neobundle`</br>
 Please refer [here](https://github.com/Shougo/neobundle.vim/blob/master/README.md) or `:help neobundle`
 
 And also you can fork this repository, if you want to custom your own configuration.

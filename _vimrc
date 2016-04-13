@@ -25,10 +25,13 @@ NeoBundle 'ctrlpvim/ctrlp.vim'
 NeoBundle 'davidhalter/jedi-vim'
 NeoBundle 'derekmcloughlin/gvimfullscreen_win32', {'disabled': !has('win32')}
 NeoBundle 'dimasg/vim-mark'
+NeoBundle 'kkoenig/wimproved.vim', {'disabled': !has('win32')}
 NeoBundle 'mbbill/fencview', {'disabled': !has('iconv')}
 NeoBundle 'mbbill/undotree'
-NeoBundle 'osyo-manga/vim-over'
+NeoBundle 'osyo-manga/vim-over', {'disabled': !(has('python') || has('python3'))}
 NeoBundle 'shougo/vimproc.vim', {'build': {'unix': 'make'}}
+NeoBundle 'shougo/vimshell.vim'
+NeoBundle 'tomasr/molokai'
 NeoBundle 'tpope/vim-speeddating'
 
 "Search, Explore
@@ -44,9 +47,10 @@ NeoBundle 'vim-scripts/molokai'
 NeoBundle 'majutsushi/tagbar'
 NeoBundle 'osyo-manga/vim-marching', {'disabled': !executable('clang')}
 NeoBundle 'osyo-manga/vim-reunions', {'disabled': !executable('clang')}
+NeoBundle 'justmao945/vim-clang', {'disabled': !executable('clang')}
 
 "Python
-NeoBundle 'davidhalter/jedi-vim', {'disabled': !executable('python')}
+NeoBundle 'davidhalter/jedi-vim', {'disabled': !(has('python') || has('python3'))}
 
 "Go
 NeoBundle 'fatih/vim-go', {'disabled': !executable('go')}
@@ -55,9 +59,10 @@ NeoBundle 'fatih/vim-go', {'disabled': !executable('go')}
 "NeoBundle 'chrisbra/colorizer'
 NeoBundle 'marijnh/tern_for_vim', {'disabled': !executable('python')}
 NeoBundle 'mattn/emmet-vim'
+NeoBundle 'ternjs/tern_for_vim', {'disabled': !(has('python') || has('python3'))}
 
 "Git related
-NeoBundle 'mhinz/vim-signify', {'disabld': !executable('git')}
+NeoBundle 'mhinz/vim-signify', {'disabled': !executable('git')}
 NeoBundle 'tpope/vim-fugitive', {'disabled': !executable('git')}
 
 "Coding
@@ -75,20 +80,17 @@ NeoBundle 'shougo/neocomplete.vim', {'disabled': !has('lua')}
 NeoBundle 'shougo/neoinclude.vim', {'depends': 'shougo/neocomplete.vim'}
 NeoBundle 'shougo/neosnippet-snippets', {'depends': 'shougo/neosnippet.vim'}
 NeoBundle 'shougo/vimproc.vim', {'build': {'unix': 'make -f make_unix.mak', 'mac': 'make -f make_mac.mak'}}
-NeoBundle 'shougo/vinarise.vim', {'vim_version': '7.3'}
+NeoBundle 'shougo/echodoc.vim'
+NeoBundle 'shougo/vinarise.vim', {'vim_version': '7.3', 'disabled': !(has('python') || has('python3'))}
 NeoBundle 'yggdroot/indentline'
 if has('lua')
   NeoBundle 'honza/vim-snippets'
-  NeoBundle 'shougo/context_filetype.vim'
-  NeoBundle 'shougo/echodoc.vim'
   NeoBundle 'shougo/neco-syntax'
   NeoBundle 'shougo/neco-vim'
   NeoBundle 'shougo/neocomplete.vim'
   NeoBundle 'shougo/neoinclude.vim'
   NeoBundle 'shougo/neosnippet-snippets'
   NeoBundle 'shougo/neosnippet.vim'
-else
-  NeoBundle 'ajh17/VimCompletesMe'
 endif
 
 " Show git repository changes in the current file
@@ -174,7 +176,7 @@ set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
 
 let $LANG = 'en_US.UTF-8'
 set langmenu=en_US
-if has('win32') || has('win64')
+if has('win32')
   source $VIMRUNTIME/delmenu.vim
   source $VIMRUNTIME/menu.vim
 endif
@@ -188,13 +190,12 @@ if has("win32")
 elseif has("macunix")
   set guifont=Sauce\ Code\ Powerline:h12
 elseif has("unix")
-  set guifont=Sauce\ Code\ Powerline\ 11
+  set guifont=Sauce\ Code\ Powerline\ 10
 endif
 if has("gui_running")
   if has("win32")
     au GUIEnter * simalt ~x
   endif
-
 
   set guioptions-=b "Bottom scrollbar
   set guioptions-=r "Right-hand scrollbar
@@ -211,13 +212,10 @@ autocmd BufEnter * :syntax sync fromstart
 
 set nocursorline
 
-"Set numbers of terminal colors
-set t_Co=256
-
-"Set 7 lines to the curors - when moving vertical..
+"Set 7 lines to the cursor - when moving vertical..
 set so=7
 
-"Turn on WiLd menu
+"Turn on wild menu
 set wildmenu
 
 "Ignore these patterns
@@ -268,7 +266,6 @@ set magic
 set noerrorbells
 set visualbell
 
-"Filetypes
 set ffs=unix,dos
 
 nmap <Leader>fd :se ff=dos<CR>
@@ -277,7 +274,7 @@ nmap <Leader>fu :se ff=unix<CR>
 "Always show the statusline
 set laststatus=2
 
-"Switch to current dir
+"Switch to current directory
 nmap <Leader>cd :cd %:p:h<CR>
 
 set completeopt+=menuone
@@ -312,7 +309,7 @@ map <silent> <Leader><CR> :noh<CR>
 noremap \m mmHmt:%s/<C-V><CR>//ge<CR>'tzt'm
 
 "Remove trailing
-nmap <leader>l :%s/\s*$//g<CR>:noh<CR>
+nmap <Leader>l :%s/\s*$//g<CR>:noh<CR>
 
 "persistent undo
 function! Make_undodir()
@@ -329,7 +326,7 @@ endfunction
 call Make_undodir()
 
 "Enable/Disable IME
-if has('gui_running') && (has("win32"))
+if has('gui_running') && has("win32")
   autocmd! InsertLeave * set imdisable
   autocmd! InsertEnter * set noimdisable
   noremap / :set noimdisable<CR>/
@@ -343,6 +340,8 @@ autocmd FileType vim map <buffer> <Leader><space> :w!<CR>:source %<CR>
 autocmd FileType vim setlocal expandtab shiftwidth=2 softtabstop=2
 autocmd FileType vim nnoremap <buffer> <silent> K :execute("help " . expand("<cword>"))<CR>
 
+autocmd FileType html,javascript setlocal expandtab shiftwidth=2 softtabstop=2
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin configuration
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -351,7 +350,7 @@ if neobundle#is_sourced('a.vim')
   let g:alternateNoDefaultAlternate = 1
 endif
 
-"tagbar
+"Tagbar
 if neobundle#is_sourced('tagbar')
   map <silent> <Leader>t <esc>:TagbarToggle<CR>
   let g:tagbar_sort = 0
@@ -360,52 +359,24 @@ if neobundle#is_sourced('tagbar')
 endif
 
 "EasyGrep
-let EasyGrepMode = 0
-let EasyGrepRecursive = 1
-let EasyGrepIgnoreCase = 1
-let EasyGrepReplaceWindowMode = 2
-let EasyGrepJumpToMatch = 0
-let g:EasyGrepFilesToExclude = "GPATH,GRTAGS,GTAGS"
+if neobundle#is_sourced('vim-easygrep')
+  let EasyGrepMode = 0
+  let EasyGrepRecursive = 1
+  let EasyGrepIgnoreCase = 1
+  let EasyGrepReplaceWindowMode = 2
+  let EasyGrepJumpToMatch = 0
+  let g:EasyGrepFilesToExclude = "GPATH,GRTAGS,GTAGS"
 
-if executable('pt')
-  set grepprg=pt
-  let EasyGrepCommand = 1
-elseif executable('ag')
-  set grepprg=ag
-  let EasyGrepCommand = 1
-elseif executable('ack')
-  set grepprg=ack
-  let EasyGrepCommand = 1
-elseif executable('grep')
-  set grepprg=grep
-  let EasyGrepCommand = 1
-else
-  set grepprg=''
-  let EasyGrepCommand = 0
-endif
-
-"vim-marching
-if neobundle#is_sourced('vim-marching')
-  if neobundle#is_sourced('neocomplete.vim')
-    let g:marching_enable_neocomplete = 1
+  if executable('pt')
+    set grepprg=pt
+    let EasyGrepCommand = 1
+  elseif executable('grep')
+    set grepprg=grep
+    let EasyGrepCommand = 1
+  else
+    set grepprg=''
+    let EasyGrepCommand = 0
   endif
-  let g:marching_enable_auto_select = 1
-  if has('unix')
-    let g:marching_include_paths = [
-          \ "/usr/include",
-          \ "/usr/local/include"
-          \]
-  endif
-endif
-
-"neosnippet
-if neobundle#is_sourced('neosnippet.vim')
-  let g:neosnippet#enable_snipmate_compatibility = 1
-endif
-
-"echodoc.vim
-if neobundle#is_sourced('echodoc.vim')
-  let g:echodoc_enable_at_startup = 1
 endif
 
 "neocomplete.vim
@@ -430,6 +401,20 @@ if neobundle#is_sourced('neocomplete.vim')
   let g:neocomplete#fallback_mappings = ["\<C-x>\<C-o>", "\<C-x>\<C-n>"]
   let g:neocomplete#enable_auto_select = 1
   let g:neocomplete#enable_at_startup = 1
+
+  "neosnippet
+  if neobundle#is_sourced('neosnippet.vim')
+    let g:neosnippet#enable_snipmate_compatibility = 1
+  endif
+
+  if neobundle#is_sourced('vim-clang')
+    let g:clang_auto = 0
+  endif
+endif
+
+"echodoc.vim
+if neobundle#is_sourced('echodoc.vim')
+  let g:echodoc_enable_at_startup = 1
 endif
 
 "CtrlP
@@ -442,7 +427,16 @@ if neobundle#is_sourced('ctrlp.vim')
     let g:ctrlp_user_command = 'pt -g . %s'
     let g:ctrlp_clear_cache_on_exit = 1
   else
-    let g:ctrlp_clear_cache_on_exit = 0
+    if has('unix')
+      let g:ctrlp_user_command = 'find %s -type f'
+      let g:ctrlp_clear_cache_on_exit = 1
+    elseif has('win32')
+      let g:ctrlp_user_command = 'dir %s /-n /b /s /a-d'
+      let g:ctrlp_clear_cache_on_exit = 1
+    else
+      let g:ctrlp_user_command = ''
+      let g:ctrlp_clear_cache_on_exit = 0
+    endif
   endif
 endif
 
@@ -451,7 +445,7 @@ if neobundle#is_sourced('vim-mark')
   let g:mwDefaultHighlightingPalette = 'maximum'
   let g:mwAutoLoadMarks = 1
   let g:mwAutoSaveMarks = 1
-  set viminfo+=! "Save and restore global vriables
+  set viminfo+=! "Save and restore global variables
 endif
 
 "airline
@@ -466,7 +460,7 @@ endif
 
 "undotree
 if neobundle#is_sourced('undotree')
-  nmap <leader>u :UndotreeToggle<CR>
+  nmap <Leader>u :UndotreeToggle<CR>
   let g:undotree_WindowLayout = 2
 endif
 
@@ -493,16 +487,26 @@ endif
 
 "tern.js
 if neobundle#is_sourced('tern_for_vim')
-    autocmd FileType javascript nnoremap <buffer> <silent> gd :TernDef<CR>
-    autocmd FileType javascript nnoremap <buffer> <silent> K :TernDoc<CR>
-    let g:tern_show_argument_hints = 'on_move'
-    let g:tern_show_signature_in_pum = 1
+  autocmd FileType javascript nnoremap <buffer> <silent> <C-]> :TernDef<CR>
+  autocmd FileType javascript nnoremap <buffer> <silent> K :TernDoc<CR>
+  let g:tern_show_signature_in_pum = 1
 endif
 
-"gvimfullscreen_win32
-if neobundle#is_sourced('gvimfullscreen_win32')
-  let $GVIMFS=substitute(expand("$VIM/vimfiles/bundle/gvimfullscreen_win32/gvimfullscreen.dll"), '\\', '\\\\', 'g')
-  map <F11> <Esc>:call libcallnr($GVIMFS, "ToggleFullScreen", 0)<CR>
+"jedi-vim
+if neobundle#is_sourced('jedi-vim')
+  autocmd FileType python nnoremap <buffer> <silent> <C-]> :call jedi#goto()<CR>
+endif
+
+"Wimproved
+if neobundle#is_sourced('wimproved.vim')
+  autocmd GUIEnter * silent! WToggleClean
+  map <F11> :WToggleFullscreen<CR>
+endif
+
+"Molokai
+if neobundle#is_sourced('molokai')
+  colorscheme molokai
+  let g:rehash256 = 1
 endif
 
 "NeoComplete
@@ -531,7 +535,7 @@ set t_Co=256
 function! Load_extra()
   "Extra setting out of vimrc
   if has("win32")
-    let l:extra_conf = expand("$VIM/extra.vim")
+    let l:extra_conf = expand("$VIM/vimfiles/extra.vim")
   elseif has("unix")
     let l:extra_conf = expand("$HOME/.vim/extra.vim")
   endif
